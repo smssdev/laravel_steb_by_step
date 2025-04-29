@@ -33,3 +33,7 @@ Route::get('/calculator/{num1}/{num2}', function ($num1,$num2) {
     // return "مجموع ${num1} و  ${num2} هو : ${sum} ";
     return "$num1 + $num2 = $sum";
 });
+
+
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+
