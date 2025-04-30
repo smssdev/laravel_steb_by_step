@@ -88,6 +88,118 @@ Route::get('/custom_user/{id}', function ($id) {
 });
 
 
-Route::get('/user/profile', function () {
-    return "PROFILE OK";
+// Route::get('/user/profile', function () {
+// })->name('profile');
+
+
+Route::get('/user/{id}/profile', function ($id) {
+    return "PROFILE OK Number " . $id;
 })->name('profile');
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return 'لوحة التحكم';
+    });
+    Route::get('/users', function () {
+        return 'إدارة المستخدمين';
+    });
+
+    Route::get('/settings', function () {
+        return 'الإعدادات';
+    });
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return 'لوحة التحكم';
+    });
+
+    Route::get('/settings', function () {
+        return 'الإعدادات';
+    });
+});
+
+
+// Route::namespace('Admin')->group(function () {
+//     // المتحكمات ضمن مساحة الأسماء "App\Http\Controllers\Admin"
+//     Route::get('/dashboard', [DashboardController::class, 'index']);
+// });
+
+
+Route::name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        return 'لوحة التحكم';
+    })->name('dashboard');  // اسم المسار سيكون "admin.dashboard"
+});
+
+
+Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        return 'لوحة التحكم';
+    })->name('dashboard');
+
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', function () {
+            return 'قائمة المستخدمين';
+        })->name('index');  // اسم المسار: "admin.users.index"
+
+        Route::get('/{id}', function ($id) {
+            return 'عرض المستخدم: ' . $id;
+        })->name('show');  // اسم المسار: "admin.users.show"
+    });
+});
+
+// فقط إجراءات محددة
+// Route::resource('posts', PostController::class)->only([
+//     'index', 'show'
+// ]);
+
+// استبعاد إجراءات محددة
+// Route::resource('users', UserController::class)->except([
+//     'create', 'store', 'edit', 'update', 'destroy'
+// ]);
+
+
+// ===========================================================
+
+# إنشاء متحكم بسيط
+// php artisan make:controller UserController
+
+// # إنشاء متحكم للموارد (مع إجراءات CRUD)
+// php artisan make:controller ProductController --resource
+
+// # إنشاء متحكم للموارد مع نموذج
+// php artisan make:controller PostController --resource --model=Post
+
+// # إنشاء متحكم لواجهة برمجة التطبيقات API
+// php artisan make:controller API/CustomerController --api
+
+// # إنشاء متحكم قابل للاستدعاء (Invokable)
+// php artisan make:controller ShowDashboard --invokable
+
+// ===========================================================
+
+
+
+// استخدام متحكم وطريقة باستخدام مصفوفة
+// Route::get('/users', [UserController::class, 'index']);
+
+// استخدام متحكم قابل للاستدعاء
+// Route::get('/dashboard', ShowDashboard::class);
+
+// استخدام متحكم موارد
+// Route::resource('products', ProductController::class);
+
+// استخدام متحكم موارد API
+// Route::apiResource('api/customers', API\CustomerController::class);
+
+// استخدام المتحكم للتعامل مع مجموعة من المسارات
+// Route::controller(OrderController::class)->group(function () {
+//     Route::get('/orders', 'index');
+//     Route::post('/orders', 'store');
+//     Route::get('/orders/{id}', 'show');
+// });
+
+
