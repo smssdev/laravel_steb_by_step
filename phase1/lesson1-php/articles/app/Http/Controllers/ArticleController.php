@@ -13,7 +13,7 @@ class ArticleController extends Controller
     {
         $articles = Article::with('author')
             ->latest()
-            ->paginate(10);
+            ->paginate(2);
 
         return view('articles.index', compact('articles'));
     }
@@ -91,6 +91,6 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->route('articles.index')
-            ->with('success', 'Article deleted successfully');
+            ->with('success', 'تم حذف المقال بنجاح');
     }
 }
