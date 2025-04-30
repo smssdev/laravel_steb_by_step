@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'index']);
+// Route::get('/tasks', [App\Http\Controllers\TaskController::class, 'index']);
+Route::get('/tasks', [TaskController::class, 'index']);
 
 Route::any('/any', function () {
     return 'هذا المسار يستجيب لجميع طرق HTTP';
